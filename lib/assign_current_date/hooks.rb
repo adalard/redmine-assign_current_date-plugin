@@ -3,7 +3,6 @@
 # and open the template in the editor.
 module AssignCurrentDate
   class Hooks < Redmine::Hook::ViewListener
-
     # redmine view hook which called at creation of new Issue ticket window
     # http://www.redmine.org/projects/redmine/wiki/Hooks_List
     def view_issues_new_top(context={})
@@ -11,6 +10,15 @@ module AssignCurrentDate
       cf_name1 = Setting.plugin_assign_current_date['cf_name']
       cv = object_custom_field(issue, cf_name1)
       cv.value = Date.today if cv
+      return nil
+    end
+    
+    #fix custom field to today date to make it unchangable to user. 
+    def controller_issues_edit_before_save(context={})
+      issue = context[:issue]
+      cf_name1 = Setting.plugin_assign_current_date['cf_name']
+      cv = object_custom_field(issue, cf_name1)
+      cv.value = Date.today.strftime("%Y-%m-%d") if cv
       return nil
     end
 
@@ -23,5 +31,9 @@ module AssignCurrentDate
       cv = object.custom_field_values.detect {|c| c.custom_field.name == cf_name}
       return cv
     end
+    
+    #creatign alias method
+    alias_method :controller_issues_new_before_save, :controller_issues_edit_before_save
+    alias_method :view_issues_show_details_bottom, :view_issues_new_top
   end
 end

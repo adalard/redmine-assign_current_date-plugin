@@ -10,6 +10,9 @@ Assign current date to specified custom field on new Issue ticket.
 
 == Usage
 1. When you click [New Issue] menu link, current date will be set to target custom field.
+2. When you click [Create] for new issue, current date will be save to target custom field.
+3. When you click [Edit] on existing issue, current date will be set to target custom field.
+4. When you click [Submit] on existing issue, current date will be save to target custom field.
 
 == Special Note
 1. Target custom filed should be Date type
